@@ -34,7 +34,7 @@ export function Hero() {
                         duration: 0.5,
                         ease: "easeInOut",
                     }}
-                    className="cursive text-5xl max-w-5xl text-center">
+                    className="cursive text-3xl md:text-5xl max-w-5xl text-center">
                     Slide In, Say Hi, Keep It Chill with PingMe.
                 </motion.div >
                 <motion.div
@@ -54,7 +54,7 @@ export function Hero() {
                         duration: 0.5,
                         ease: "easeInOut",
                     }}
-                    className="text-2xl bubbler-one-regular text-center">
+                    className="text-lg md:text-2xl bubbler-one-regular text-center">
                     “Good vibes only, better vibes everywhere, best vibes always.”
                 </motion.div>
                 <motion.div
