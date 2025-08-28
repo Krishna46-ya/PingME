@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono , Edu_NSW_ACT_Cursive, Nunito , Bubbler_One } from 'next/font/google'
 import './globals.css'
 
 const geistSans = Geist({
@@ -10,6 +10,25 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+})
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-nunito',
+})
+
+const bubblerOne = Bubbler_One({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-bubbler',
+})
+
+const eduFont = Edu_NSW_ACT_Cursive({
+  subsets: ['latin'],        // required
+  weight: ['400', '700'],    // choose the weights you need
+  style: 'normal',           // optional
+  variable: '--font-edu',    // optional CSS variable for Tailwind
 })
 
 export const metadata: Metadata = {
@@ -25,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${eduFont.variable} antialiased`}
       >
         {children}
       </body>
