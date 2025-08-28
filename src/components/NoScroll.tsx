@@ -1,7 +1,40 @@
+'use client'
+import { motion } from 'motion/react'
+import Image from 'next/image'
+
+const technologies = [
+    {
+        name: "Tailwind",
+        src: "/logo/tailwind.png"
+    },
+    {
+        name: "Motion",
+        src: "/logo/motion.png"
+    },
+    {
+        name: "Next.js",
+        src: "/logo/next-js.svg"
+    },
+    {
+        name: "NextAuth.js",
+        src: "/logo/nextAuth.webp"
+    },
+    {
+        name: "Prisma",
+        src: "/logo/prisma.png"
+    },
+    {
+        name: "TypeScript",
+        src: "/logo/ts.png"
+    }
+]
+
+
+
 export function NoScroll() {
     return (<>
-        <div className="w-full h-full bg-white/30">
-            <div className="max-w-5xl text-slate-800 text-2xl md:text-5xl py-32 font-bold mx-auto text-center items-center">
+        <div className="w-full h-full pt-38  bg-white/30">
+            <div className="max-w-5xl text-slate-800 text-2xl md:text-5xl font-bold mx-auto text-center items-center">
                 <p>YOU CAN'T SCROLL ANYMORE.</p>
                 <p className="pb-5"> BETTER GO CHAT.</p>
                 <button className="cursor-pointer hover:scale-[1.05] transition-all duration-300 ease-in-out flex items-center nunito-main px-6 text-lg font-semibold bg-gradient-to-bl shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)]  from-[#f8d7e4] to-[#d5e9fa] py-2 mx-auto rounded-full">
@@ -9,8 +42,22 @@ export function NoScroll() {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                     </svg>
-                </button>        
-                </div>
+                </button>
+            </div>
+            <div className='bg-white/30'>
+                <motion.div className="max-w-6xl mx-auto flex justify-around bg-gradient-to-l py-4 mt-12 overflow-hidden">
+                    {technologies.map((tech, idx) => {
+                        return (
+                            <div className='flex justify-center items-center gap-x-1 md:gap-x-3' key={tech.name}>
+                                <div className='relative w-5 h-5 sm:w-8 sm:h-8 lg:h-10 lg:w-10'>
+                                    <Image src={tech.src} alt='tech' fill></Image>
+                                </div>
+                                <div className='lg:text-xl md:text-lg text-slate-800 text-[10px] font-semibold'>{tech.name}</div>
+                            </div>
+                        )
+                    })}
+                </motion.div>
+            </div>
         </div>
     </>)
 }

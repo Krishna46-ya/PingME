@@ -6,7 +6,7 @@ export function DevScribe() {
     return (
         <div className="w-full h-full bg-white/30">
             <div className="flex justify-center mx-2 pb-20">
-            <div className="mt-20 lg:w-4xl grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-white/50 rounded-4xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+            <div className="mt-38 lg:w-4xl grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-white/50 rounded-4xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
                 <div onClick={() => { router.push('https://devscribe-ten.vercel.app/') }} className="md:col-span-1 transition-all duration-300 ease-in-out hover:scale-[1.03]">
                     <div className="p-3 w-full h-full">
                         <div className="bg-black h-full w-full relative overflow-hidden rounded-4xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">

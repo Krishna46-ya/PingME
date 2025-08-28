@@ -56,7 +56,7 @@ export function Testimonial() {
                     <div className='absolute z-20 w-full h-32 bottom-0 bg-gradient-to-t from-pink-100/95 via-transparent pointer-events-none'>
                     </div>
 
-                    <div className='h-[600px] py-4  px-3 relative overflow-hidden'>
+                    <div className='h-[500px] py-4  px-3 relative overflow-hidden'>
                         <motion.div
                             className='flex flex-col gap-12'
                             animate={{
@@ -103,7 +103,7 @@ export function Testimonial() {
                         </motion.div>
                     </div>
 
-                    <div className='h-[600px] hidden md:block py-4 px-3 relative overflow-hidden'>
+                    <div className='h-[500px] hidden md:block py-4 px-3 relative overflow-hidden'>
                         <motion.div
                             className='flex flex-col gap-12'
                             animate={{
@@ -150,7 +150,7 @@ export function Testimonial() {
                         </motion.div>
                     </div>
 
-                    <div className='h-[600px] hidden lg:block py-4 px-3 relative overflow-hidden'>
+                    <div className='h-[500px] hidden lg:block py-4 px-3 relative overflow-hidden'>
                         <motion.div
                             className='flex flex-col gap-12'
                             animate={{
