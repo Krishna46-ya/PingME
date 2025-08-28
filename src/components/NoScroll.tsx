@@ -62,20 +62,7 @@ export function NoScroll() {
                     </svg>
                 </button>
             </motion.div>
-            <div className='bg-white/30'>
-                <motion.div className="max-w-6xl mx-auto flex justify-around bg-gradient-to-l py-4 mt-12 overflow-hidden">
-                    {technologies.map((tech) => {
-                        return (
-                            <div className='flex justify-center items-center gap-x-1 md:gap-x-3' key={tech.name}>
-                                <div className='relative w-5 h-5 sm:w-8 sm:h-8 lg:h-10 lg:w-10'>
-                                    <Image src={tech.src} alt='tech' fill></Image>
-                                </div>
-                                <div className='lg:text-xl md:text-lg text-slate-800 text-[10px] font-semibold'>{tech.name}</div>
-                            </div>
-                        )
-                    })}
-                </motion.div>
-            </div>
+            
         </div>
     </>)
 }

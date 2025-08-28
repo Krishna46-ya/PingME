@@ -29,7 +29,7 @@ export function DevScribe() {
                     <div onClick={() => { router.push('https://devscribe-ten.vercel.app/') }} className="md:col-span-1 transition-all duration-300 ease-in-out hover:scale-[1.03]">
                         <div className="p-3 w-full h-full">
                             <div className="bg-black h-full w-full relative overflow-hidden rounded-4xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                                <Image className="object-cover" src={"/DevScribe.png"} alt="hero" fill></Image>
+                                <Image src={"/DevScribe.png"} alt="hero" fill></Image>
                             </div>
                         </div>
                     </div>
