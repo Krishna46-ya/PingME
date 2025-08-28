@@ -8,37 +8,37 @@ const testimonials = [
     {
         name: "Alice Johnson",
         userId: "@alice_j",
-        message: "This service is amazing! Highly recommend to everyone.",
+        message: "This is a fake review.",
         dp: "/drawing.jpeg"
     },
     {
         name: "Bob Smith",
         userId: "@bob_smith",
-        message: "Absolutely fantastic experience from start to finish.",
+        message: "This is also a fake review",
         dp: "/anime.jpeg"
     },
     {
         name: "Catherine Lee",
         userId: "@cathy_lee",
-        message: "Their team went above and beyond to help me.",
+        message: "Write a review on my twitter post... \n And I will add your review here.",
         dp: "/cloud.jpeg"
     },
     {
         name: "David Kim",
         userId: "@david_k",
-        message: "I'm blown away by the quality and attention to detail.",
+        message: "Made with Framer motion and tailwind",
         dp: "/hero2.jpeg"
     },
     {
         name: "Emma Williams",
         userId: "@emma_w",
-        message: "I can't imagine using anyone else. Truly outstanding.",
+        message: "Also tell me if you think there can be some improvement done on this landing page",
         dp: "/dp.jpeg"
     },
     {
         name: "Emma William",
         userId: "@emma_w",
-        message: "I can't imagine using anyone else. Truly outstanding.",
+        message: "A fake and duplicate review.",
         dp: "/dp.jpeg"
     }
 ]
@@ -98,7 +98,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
@@ -114,7 +114,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
@@ -145,7 +145,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
@@ -161,7 +161,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
@@ -192,7 +192,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
@@ -208,7 +208,7 @@ export function Testimonial() {
                                                 <div className="text-sm font-semibold">{testi.userId}</div>
                                             </div>
                                         </div>
-                                        <div className="text-[17px]">{testi.message}</div>
+                                        <div className="text-[17px] whitespace-pre-line">{testi.message}</div>
                                     </div>
                                 )
                             })}
