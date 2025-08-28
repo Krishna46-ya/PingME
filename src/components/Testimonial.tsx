@@ -1,7 +1,8 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { motion, useMotionTemplate, useScroll, useTransform } from 'motion/react'
 import Image from 'next/image'
+import { useRef } from 'react'
 
 const testimonials = [
     {
@@ -43,13 +44,30 @@ const testimonials = [
 ]
 
 export function Testimonial() {
+
+    const ref = useRef<HTMLDivElement>(null)
+    const {scrollYProgress}=useScroll({
+        target:ref,
+        offset:["start end","end start"]
+    })
+
+    const transformOpacity =useTransform(scrollYProgress,[0,0.2,0.4,1],[0,0,1,1])
+    const transformScale = useTransform(scrollYProgress,[0,0.2,0.4,1],[0.95,0.95,1,1])
+    const transformBlur = useTransform(scrollYProgress,[0,0.2,0.4,1],[10,10,0,0])
     return (
         <div className='w-full h-full bg-white/30'>
             <div className='max-w-6xl pt-24 mx-auto px-3'>
-                <div className='flex flex-col md:flex-row justify-center text-[14px] sm:text-2xl nunito-main pb-10 text-slate-800 items-center'>
+                <motion.div
+                ref={ref}
+                style={{
+                    opacity:transformOpacity,
+                    scale:transformScale,
+                    filter:useMotionTemplate`blue(${transformBlur}px)`
+                }}
+                className='flex flex-col md:flex-row justify-center text-[14px] sm:text-2xl nunito-main pb-10 text-slate-800 items-center'>
                     <div>Here's what some of our users have to say about</div>
                     <div className='text-xl pt-1 sm:text-4xl text-slate-800 font-mono font-semibold tracking-tighter md:pl-3'> PingMe.</div>
-                </div>
+                </motion.div>
                 <div className='grid md:grid-cols-2 rounded-xl overflow-hidden lg:grid-cols-3 relative bg-white/20 px-5'>
                     <div className='absolute z-20 w-full h-32 top-0 bg-gradient-to-b from-pink-100/95 via-transparent pointer-events-none'>
                     </div>

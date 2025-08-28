@@ -1,10 +1,12 @@
+import { useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
 
 export function Footer() {
+    const [hover , setHover] = useState(false)
     return (
         <>
-
             <div className="w-full border-t border-white/70">
                 <div className="max-w-5xl py-20 mx-auto grid grid-cols-1 md:grid-cols-2">
                     <div className="md:col-span-1 px-12">
@@ -17,13 +19,15 @@ export function Footer() {
                             </h1>
                         </div>
                         <h2 className="text-lg font-semibold text-slate-600 pt-4">
-                            A product by <span className="text-slate-950">Krishna</span>
+                            A product by <span className={`transition-colors duration-300 ease-in-out ${hover?"text-cyan-600":"text-slate-950"}`}>Krishna</span>
                         </h2>
                         <p className="md:text-lg font-semibold text-slate-600">
                             Building in public at{" "}
                             <Link
+                                onMouseEnter={()=>{setHover(true)}}
+                                onMouseLeave={()=>{setHover(false)}}
                                 href={"https://twitter.com/KrishnaYad72181"}
-                                className="text-blue-600"
+                                className="text-blue-600 hover:text-pink-800 transition-colors ease-in-out duration-300"
                             >
                                 @KrishnaYad72181
                             </Link>
@@ -34,16 +38,18 @@ export function Footer() {
                         <div className="flex gap-20 flex-row">
                             <div className="text-neutral-700 font-semibold">
                                 <h3 className="text-xl text-neutral-900 pb-3 font-semibold">Links</h3>
-                                <div>
+                                <div className="hover:translate-x-2 transition-all duration-200 ease-in-out">
                                     <Link href={"/"}>Contact</Link>
                                 </div>
-                                <div>
+                                <div className="hover:translate-x-2 transition-all duration-200 ease-in-out">
                                     <Link href={"https://devscribe-ten.vercel.app/"}>DevScribe</Link>
                                 </div>
                             </div>
                             <div className="text-neutral-700 font-semibold">
                                 <h3 className="text-xl text-neutral-900 pb-3 font-semibold">Socials</h3>
-                                <Link href={"https://x.com/KrishnaYad72181"}>Twitter</Link>
+                                <div className="hover:translate-x-2 transition-all duration-200 ease-in-out">
+                                    <Link href={"https://x.com/KrishnaYad72181"}>Twitter</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
