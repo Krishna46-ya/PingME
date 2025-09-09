@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono , Edu_NSW_ACT_Cursive, Nunito , Bubbler_One } from 'next/font/google'
+import { Geist, Geist_Mono, Edu_NSW_ACT_Cursive, Nunito, Bubbler_One } from 'next/font/google'
 import './globals.css'
+import { Provider } from './providers'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,7 +34,7 @@ const eduFont = Edu_NSW_ACT_Cursive({
 
 export const metadata: Metadata = {
   title: 'PingME',
-  icons:{
+  icons: {
     icon: "/favicon.jpg"
   }
 }
@@ -48,7 +49,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${eduFont.variable} antialiased`}
       >
-        {children}
+        <Provider>
+          {children}
+        </Provider>
       </body>
     </html>
   )

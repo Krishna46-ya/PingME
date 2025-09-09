@@ -8,15 +8,15 @@ import { useEffect, useRef, useState } from "react";
 const Links = [
     {
         name: "About",
-        link: "/"
+        link: "/home"
     },
     {
         name: "Login",
-        link: "/"
+        link: "/api/auth/signin"
     },
     {
         name: "Sign Up",
-        link: "/"
+        link: "/api/auth/signin"
     }
 ]
 

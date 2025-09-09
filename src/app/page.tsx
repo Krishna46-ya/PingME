@@ -40,8 +40,6 @@ export default function Home() {
                 <DevScribe></DevScribe>
                 <Footer></Footer>
             </div>
-            
-
         </>
     )
 }
