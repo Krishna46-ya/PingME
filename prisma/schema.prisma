@@ -19,6 +19,7 @@ model User {
   accounts        Account[]
   OtpVarification OtpVerification[]
   Message         Message[]
+  participant     participant[]
 }
 
 model Account {
@@ -63,6 +64,7 @@ model participant {
   conversationId String
 
   conversation Conversation @relation(fields: [conversationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
 }
 
 model Message {

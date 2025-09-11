@@ -50,15 +50,15 @@ export const NEXT_AUTH: NextAuthOptions = {
     ],
     events: {
         async linkAccount({ user, account }) {
-            if(account.provider==="google"){
+            if (account.provider === "google") {
                 await prisma.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    verified: true
-                }
-            })
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        verified: true
+                    }
+                })
             }
         }
     },
@@ -71,7 +71,7 @@ export const NEXT_AUTH: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (token && session.user) {
-                (session.user as any).id = token.id
+                session.user.id = token.id
             }
             return session
         }

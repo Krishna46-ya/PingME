@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "next-ws patch"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -15,9 +16,11 @@
     "motion": "^12.23.12",
     "next": "15.5.0",
     "next-auth": "^4.24.11",
+    "next-ws": "^2.1.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "resend": "^6.0.2",
+    "ws": "^8.18.3",
     "zod": "^4.1.5"
   },
   "devDependencies": {
@@ -25,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/ws": "^8.18.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4",
