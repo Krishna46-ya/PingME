@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"
 import z, { email, string } from "zod";
+import bcrypt from "bcrypt"
 
 const credentialsSchema = z.object({
     email: email(),
@@ -28,12 +29,15 @@ export const NEXT_AUTH: NextAuthOptions = {
                 const user = await prisma.user.findFirst({
                     where: {
                         email: credentials.email,
-                        password: credentials.password,
                         verified: true
                     }
                 })
 
-                if (!user) return null
+                if (!user || !user.password) return null
+
+                const verify = await bcrypt.compare(credentials.password, user.password)
+
+                if (!verify) return null
 
                 return {
                     id: user.id,

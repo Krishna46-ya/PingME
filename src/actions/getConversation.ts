@@ -32,5 +32,9 @@ export async function getConversation() {
     })
 
 
-    return convo
+    return {
+        msg: "convo found",
+        status: 200,
+        convo: convo
+    }
 }

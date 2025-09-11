@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import z, { email, string } from "zod";
 import { VerificationEmail } from "@/actions/VerificationEmail";
+import bcrypt from "bcrypt";
 
 const userSchema = z.object({
     username: string().min(3),
@@ -10,7 +11,7 @@ const userSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-    
+
     const result = userSchema.safeParse(await req.json())
     if (!result.success) {
         return NextResponse.json({
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
     if (body.username.toLowerCase() === "krishna") {
         return NextResponse.json({
             msg: "Try some other name lil bro, that's my name."
-        })
+        }, { status: 400 })
     }
 
     const user = await prisma.user.findUnique({
@@ -33,11 +34,12 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user) {
+        const hash = await bcrypt.hash(body.password, 10)
         const newUser = await prisma.user.create({
             data: {
                 name: body.username,
                 email: body.email,
-                password: body.password
+                password: hash
             }
         })
 
@@ -60,11 +62,12 @@ export async function POST(req: NextRequest) {
         else {
             return NextResponse.json({
                 msg: "Error :" + mailInfo.error + " while sending Email"
-            },{status:404})
+            }, { status: 404 })
         }
     }
 
     if (user.verified === false) {
+        const hash = await bcrypt.hash(body.password, 10)
         const otp = Math.floor(100000 + Math.random() * 900000)
         const newUser = await prisma.$transaction([
             prisma.user.update({
@@ -73,7 +76,7 @@ export async function POST(req: NextRequest) {
                 },
                 data: {
                     name: body.username,
-                    password: body.password,
+                    password: hash,
                 }
             }),
             prisma.otpVerification.deleteMany({
@@ -100,7 +103,7 @@ export async function POST(req: NextRequest) {
         else {
             return NextResponse.json({
                 msg: "Error :" + mailInfo.error + " occured while sending Email"
-            },{status:404})
+            }, { status: 404 })
         }
     }
 
