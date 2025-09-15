@@ -5,6 +5,7 @@ import { WebSocket, WebSocketServer } from "ws";
 import { NEXT_AUTH } from "../../auth/[...nextauth]/route";
 import { ChatMessageSchema, JoinMessageSchema, ServerMessage, WSMessage } from "@/types/wsMessages";
 import { Session } from "next-auth"
+import { redis } from "@/lib/redis";
 
 
 const clients = new Map<string, WebSocket>()
@@ -87,6 +88,7 @@ export async function UPGRADE(
                 }
                 BroadcastMessage({ serverMessage, participant: isConvo.participant })
                 client.send(JSON.stringify(serverMessage))
+                await appendCacheMessage({ sessionId: session.user.id, conversationId: isConvo.id, message })
                 return
             }
 
@@ -102,6 +104,7 @@ export async function UPGRADE(
             }
             BroadcastMessage({ serverMessage, participant: newConvo.participant })
             client.send(JSON.stringify(serverMessage))
+            await appendCacheMessage({ sessionId: session.user.id, conversationId: newConvo.id, message })
             return
         }
 
@@ -133,6 +136,7 @@ export async function UPGRADE(
                 }
                 BroadcastMessage({ serverMessage, participant: newConvo.participant })
                 client.send(JSON.stringify(serverMessage))
+                await appendCacheMessage({ sessionId: session.user.id, conversationId: newConvo.id, message })
                 return
             }
 
@@ -155,6 +159,7 @@ export async function UPGRADE(
             }
             BroadcastMessage({ serverMessage, participant: isConvo.participant })
             client.send(JSON.stringify(serverMessage))
+            await appendCacheMessage({ sessionId: session.user.id, conversationId: isConvo.id, message })
             return
         }
 
@@ -226,5 +231,43 @@ function BroadcastMessage({ serverMessage, participant }: {
                 console.error(`Failed to send to ${p.userId}` + err)
             }
         }
+    }
+}
+
+async function appendCacheMessage({ sessionId, conversationId, message }: {
+    sessionId: string,
+    conversationId: string,
+    message: {
+        conversationId: string;
+        content: string;
+        id: string;
+        senderId: string;
+        createdAt: Date;
+    }
+}) {
+    const id = `messages:${sessionId}:${conversationId}`
+    const cacheExists = await redis.exists(id)
+    if (cacheExists) {
+        await redis.multi()
+            .rpush(id, JSON.stringify(message))
+            .ltrim(id, -25, -1)
+            .expire(id, 24 * 60 * 60)
+            .exec()
+    } else {
+        const messages = await prisma.message.findMany({
+            where: {
+                conversationId
+            },
+            take: 25,
+            orderBy: {
+                createdAt: "asc"
+            }
+        })
+        const jsonMessage = messages.map(x => JSON.stringify(x))
+        await redis.multi()
+            .lpush(id, ...jsonMessage.reverse())
+            .ltrim(id, -25, -1)
+            .expire(id, 24 * 60 * 60)
+            .exec()
     }
 }

@@ -20,16 +20,19 @@ export default function Home() {
 
     const session = useSession()
     return (<>
-        {JSON.stringify(session)}
-        <div>
-            <button onClick={async () => { await signOut() }}>LOG OUT</button>
-            <button onClick={async () => {
-                await axios.post('/api/v1/signup', {
-                    email: "krishna@yadav.com",
-                    password: "123456789",
-                    username:"krishnaCHU"
-                })
-            }}>data</button>
+        <div className="h-screen w-full bg-black text-white">
+            {JSON.stringify(session)}
+            <div>
+                <button onClick={async () => { await signOut() }}>LOG OUT</button>
+                <button onClick={async () => {
+                    await axios.post('/api/v1/signup', {
+                        email: "krishna@yadav.com",
+                        password: "123456789",
+                        username: "krishnaCHU"
+                    })
+                }}>data</button>
+            </div>
+
         </div>
     </>)
 }

@@ -4,6 +4,7 @@ import prisma from "@/lib/db"
 import { NEXT_AUTH } from "@/app/api/auth/[...nextauth]/route"
 import { getServerSession } from "next-auth"
 import z from "zod"
+import { redis } from "@/lib/redis"
 
 const convoId = z.object({
     conversationId: z.string().length(25),
@@ -28,6 +29,22 @@ export async function GetMessages(input: { conversationId: string, skip?: string
     }
     const { conversationId, skip } = result.data
 
+    //checking the cache to see of there is data in it
+
+    const cacheKey = `messages:${session.user.id}:${conversationId}`
+    if (skip === 0) {
+        const cached = await redis.lrange<string | null>(cacheKey, 0, 24)
+        const cachedData = cached.filter((x): x is string => x !== null).map((x) => JSON.parse(x))
+
+        if (cachedData.length) {
+            return {
+                msg: "Messages found (cache)",
+                status: 200,
+                data: cachedData
+            }
+        }
+    }
+
     const messages = await prisma.conversation.findFirst({
         where: {
             participant: {
@@ -37,10 +54,10 @@ export async function GetMessages(input: { conversationId: string, skip?: string
         },
         include: {
             Message: {
-                take: 20,
+                take: 25,
                 skip,
                 orderBy: {
-                    createdAt: "desc"
+                    createdAt: "asc"
                 }
             }
         }
@@ -51,6 +68,15 @@ export async function GetMessages(input: { conversationId: string, skip?: string
             msg: "Converation Doesn't Exist",
             status: 404
         }
+    }
+
+    if (skip === 0) {
+        const jsonMessage = messages.Message.map(x => JSON.stringify(x))
+        await redis.multi()
+            .lpush(cacheKey, ...jsonMessage.reverse())
+            .ltrim(cacheKey, -25, -1)
+            .expire(cacheKey, 24 * 60 * 60)
+            .exec()
     }
 
     return {

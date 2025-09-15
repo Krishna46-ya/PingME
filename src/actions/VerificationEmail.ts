@@ -6,7 +6,7 @@ export async function VerificationEmail({ email, otp, username }: { email: strin
 
   try {
     const data = await resend.emails.send({
-      from: "Resend <onboarding@resend.dev>",
+      from: "noreply@updates.krishnay.shop",
       to: email,
       subject: "Verify your account",
       html: `
@@ -17,6 +17,6 @@ export async function VerificationEmail({ email, otp, username }: { email: strin
     })
     return { success: true, data }
   } catch (error) {
-    return { success: false , error}
+    return { success: false, error }
   }
 }
