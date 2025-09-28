@@ -6,6 +6,7 @@ import z from "zod"
 export const BaseMessageSchema = z.object({
     type: z.string(),
     conversationId: z.string().nullable().optional(),
+    tempId: z.string()
 })
 
 export const ChatMessageSchema = BaseMessageSchema.extend({
@@ -36,6 +37,7 @@ export type WSMessage = z.infer<typeof WSMessageSchema>
 export type ServerMessage = {
     type: "chat",
     data: {
+        id: string,
         conversationId: string,
         senderId: string,
         content: string,
@@ -47,4 +49,31 @@ export type ServerMessage = {
         code: string,
         message: string
     }
+} | {
+    type: "newChat",
+    data: {
+        message: {
+            id: string,
+            conversationId: string,
+            senderId: string,
+            content: string,
+            timeStamp: string,
+        },
+        participant: {
+            id: string,
+            name: string | null,
+            image: string | null
+        }
+    }
+} | {
+    type: "revert",
+    data: {
+        id: string,
+        conversationId: string,
+        senderId: string,
+        content: string,
+        timeStamp: string,
+
+    },
+    tempId: string
 }

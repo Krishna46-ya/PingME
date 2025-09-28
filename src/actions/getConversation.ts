@@ -18,7 +18,19 @@ export async function getConversation() {
             }
         },
         include: {
-            participant: true,
+            participant: {
+                where: {
+                    userId: { not: session.user.id }
+                },
+                include: {
+                    user: {
+                        select: {
+                            name: true,
+                            image: true
+                        }
+                    }
+                },
+            },
             Message: {
                 take: 1,
                 orderBy: {
@@ -35,6 +47,6 @@ export async function getConversation() {
     return {
         msg: "convo found",
         status: 200,
-        convo: convo
+        convo
     }
 }

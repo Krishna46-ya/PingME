@@ -3,8 +3,9 @@
 import prisma from "@/lib/db"
 import { NEXT_AUTH } from "@/app/api/auth/[...nextauth]/route"
 import { getServerSession } from "next-auth"
-import z from "zod"
+import z, { json } from "zod"
 import { redis } from "@/lib/redis"
+import { message } from "@/store/useChatStore"
 
 const convoId = z.object({
     conversationId: z.string().length(25),
@@ -31,10 +32,10 @@ export async function GetMessages(input: { conversationId: string, skip?: string
 
     //checking the cache to see of there is data in it
 
-    const cacheKey = `messages:${session.user.id}:${conversationId}`
+    const cacheKey = `messages:${conversationId}`
     if (skip === 0) {
-        const cached = await redis.lrange<string | null>(cacheKey, 0, 24)
-        const cachedData = cached.filter((x): x is string => x !== null).map((x) => JSON.parse(x))
+        const cached = await redis.lrange<any | null>(cacheKey, 0, 24)
+        const cachedData = cached.filter((x) => x !== null)
 
         if (cachedData.length) {
             return {

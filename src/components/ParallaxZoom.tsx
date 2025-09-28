@@ -16,7 +16,6 @@ export function ParallaxZoom() {
     const scale7 = useTransform(scrollYProgress, [0, 1], [1, 7])
     const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9])
 
-
     return (
         <>
             <div ref={ref} className="h-[300vh] realtive">

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 const Links = [
     {
         name: "About",
-        link: "/home"
+        link: "/chat/home"
     },
     {
         name: "Login",

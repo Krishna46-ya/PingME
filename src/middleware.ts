@@ -29,7 +29,7 @@ export default async function middleware(req: NextRequest) {
     }
 
     if (req.headers.has("next-action") && req.method === "POST") {
-        limit = 50
+        limit = 100
         try {
             await secondLimiter.checkNext(req, limit);
             return NextResponse.next();
@@ -38,8 +38,8 @@ export default async function middleware(req: NextRequest) {
         }
     }
 
-    if (path.startsWith("/api/v1/ws") || path.startsWith('/api/auth')) {
-        limit = 50
+    if (path.startsWith("/api/v1/ws")) {
+        limit = 100
         try {
             await secondLimiter.checkNext(req, limit);
             return NextResponse.next();
