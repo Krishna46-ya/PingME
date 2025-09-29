@@ -50,6 +50,7 @@ type chatState = {
     appendConversation: (conversationMeta: conversationMeta) => void,
 
     validateConversation: (message: Extract<ServerMessage, { type: "revert" }>) => void
+    prependMessages: (convoId: ID, messages: message[]) => void
 }
 
 export const useChatStore = create<chatState>((set, get) => ({
@@ -142,6 +143,18 @@ export const useChatStore = create<chatState>((set, get) => ({
                 ],
                 messagesByConvo: {
                     ...restMessages, [message.data.conversationId]: [newMessage]
+                }
+            }
+        })
+    },
+
+    prependMessages: (convoId, messages) => {
+        set((state) => {
+            const newMessageList = [...messages, ...state.messagesByConvo[convoId]]
+
+            return {
+                messagesByConvo: {
+                    ...state.messagesByConvo, [convoId]: newMessageList
                 }
             }
         })

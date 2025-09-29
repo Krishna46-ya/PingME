@@ -139,7 +139,6 @@ export async function UPGRADE(
                 await BroadcastNewMessage({ message: serverMessage.data, participant: newConvo.participant })
                 await appendCacheMessage({ sessionId: session.user.id, conversationId: newConvo.id, message })
                 client.send(JSON.stringify({ ...serverMessage, type: "revert", tempId: result.data.tempId }))
-                console.log("over")
                 return
             }
             const message = await prisma.message.create({
@@ -178,6 +177,7 @@ export async function UPGRADE(
 }
 
 async function NoConversation({ msg, session }: { msg: WSMessage, session: Session }) {
+    const pairKe = [session.user.id, msg.recipientId].sort().join("_")
     const newConvo = await prisma.conversation.create({
         data: {
             participant: {
@@ -185,7 +185,8 @@ async function NoConversation({ msg, session }: { msg: WSMessage, session: Sessi
                     { user: { connect: { id: session.user.id } } },
                     { user: { connect: { id: msg.recipientId } } },
                 ]
-            }
+            },
+            pairKe
         },
         include: { participant: true }
     })
@@ -235,7 +236,7 @@ async function BroadcastNewMessage({ message, participant }: {
         if (ws && ws.readyState === WebSocket.OPEN) {
             const sender = await prisma.user.findFirst({
                 where: {
-                    id: p.userId
+                    id: message.senderId
                 },
                 select: {
                     name: true,

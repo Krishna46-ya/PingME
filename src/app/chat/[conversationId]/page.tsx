@@ -12,12 +12,12 @@ export default async function Home({ params }: any) {
         redirect('/api/auth/signin')
     }
     return (<>
-        <div className="w-[30vw]">
+        <div className={`w-full sm:w-[30vw] sm:block ${conversationId === "home" ? "block" : "hidden"}`}>
             <ActiveConveresation id={session.user.id} />
             <Conversations id={session.user.id} />
         </div>
 
-        <div className="w-full">
+        <div className={`w-full ${conversationId === "home" && "hidden sm:block"}`}>
             <div className="h-screen w-full bg-[#fafafa] relative text-gray-950">
                 <div
                     className="absolute inset-0 z-0 pointer-events-none"
@@ -29,7 +29,7 @@ export default async function Home({ params }: any) {
                         backgroundSize: "40px 40px",
                     }}
                 />
-                <div className="h-screen overflow-auto">
+                <div>
                     <MessageArea recipient={conversationId} ID={session.user.id} />
                 </div>
             </div>

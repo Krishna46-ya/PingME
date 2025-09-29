@@ -1,9 +1,10 @@
 'use client'
 import { useChatStore } from "@/store/useChatStore"
 import { InputMessage } from "./MessageInput"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { GetMessages } from "@/actions/getMessages"
 import { Avator } from "./ui/avator"
+import { getOldMessages } from "@/actions/getOldMessage"
 import { redirect } from "next/navigation"
 
 export function MessageArea({ recipient, ID }: { recipient: string, ID: string }) {
@@ -12,7 +13,11 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
     const users = useChatStore(s => s.users)
     const conversations = useChatStore(s => s.conversations)
     const setMessageForConversation = useChatStore(s => s.setMessagesForConvo)
+    const prependMessages = useChatStore(s => s.prependMessages)
     const messagesByConvo = useChatStore(s => s.messagesByConvo)
+    const messageEndRef = useRef<HTMLDivElement>(null)
+    const scrollCointainerRef = useRef<HTMLDivElement>(null)
+    const [autoScroll, setAutoScroll] = useState(true)
 
     const isValid =
         recipientId !== "Invalid" &&
@@ -35,6 +40,37 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
         }
     }, [])
 
+    useEffect(() => {
+        if (!conversationId) return
+        if (autoScroll) {
+            messageEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+    }, [conversationId, conversationId ? messagesByConvo[conversationId]?.length : 0, autoScroll])
+
+    const scrollHandler = async () => {
+        const scroll = scrollCointainerRef.current
+        if (!scroll || !conversationId) return;
+        if (scroll.scrollTop <= 0) {
+            const totalMessages = messagesByConvo[conversationId].length
+            if (totalMessages <= 24) return
+            const messages = await getOldMessages({ conversationId, skip: totalMessages })
+            if (messages.data) {
+                await prependMessages(conversationId, messages.data.map((message) => ({
+                    ...message,
+                    createdAt: message.createdAt.toISOString()
+                })))
+            }
+            console.log(messages)
+        }
+    }
+
+    const onUserScroll = () => {
+        const el = scrollCointainerRef.current
+        if (!el) return
+        const distanceFromTop = el.scrollTop
+        setAutoScroll(distanceFromTop > 100)
+    }
+
     if (isValid === false) {
         return (<></>)
     }
@@ -42,25 +78,35 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
     const fullRecepient = users.find(e => e.id === recipientId)
 
     return (<>
-        <div className="absolute top-0 left-0 w-full bg-slate-400 items-center justify-between p-2">
-            <div className="flex items-center">
-                <Avator id={recipientId}></Avator>
-                <span className="pl-2 text-lg font-semibold">{fullRecepient?.name}</span>
+        <div
+            ref={scrollCointainerRef}
+            onScroll={(e) => {
+                onUserScroll()
+                scrollHandler()
+            }}
+            className="h-screen overflow-y-auto">
+            <div className="sticky top-0 left-0 w-full bg-slate-400 items-center flex justify-between p-2">
+                <div className="flex items-center">
+                    <Avator id={recipientId}></Avator>
+                    <span className="pl-2 text-lg font-semibold">{fullRecepient?.name}</span>
+                </div>
+                <button className="block sm:hidden" onClick={()=>{redirect('/chat/home')}}>BACK</button>
             </div>
-        </div>
-        <div className="h-full pt-16">
-            {conversationId && (messagesByConvo[conversationId] || []).map((m) => {
-                return (
-                    <div key={m.id}>
-                        <div className={`p-3 ${m.senderId === ID ? "text-right" : "text-left"}`}>
-                            <span className={`p-3 ${m.senderId === ID ? "bg-blue-400" : "bg-white"}`}>{m.content}</span>
+            <div className="h-full pt-16">
+                {conversationId && (messagesByConvo[conversationId] || []).map((m) => {
+                    return (
+                        <div key={m.id}>
+                            <div className={`p-3 ${m.senderId === ID ? "text-right" : "text-left"}`}>
+                                <span className={`p-3 ${m.senderId === ID ? "bg-blue-400" : "bg-white"}`}>{m.content}</span>
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
-        </div>
-        <div className="absolute bottom-3 p-2 w-full justify-center flex items-center">
-            {!(conversationId === undefined) && <InputMessage ID={ID} recipientId={recipientId} conversationId={conversationId}></InputMessage>}
+                    )
+                })}
+                <div ref={messageEndRef}></div>
+            </div>
+            <div className="absolute bottom-3 p-2 w-full justify-center flex items-center">
+                {!(conversationId === undefined) && <InputMessage ID={ID} recipientId={recipientId} conversationId={conversationId}></InputMessage>}
+            </div>
         </div>
     </>)
 }
