@@ -58,7 +58,7 @@ export async function GetMessages(input: { conversationId: string, skip?: string
                 take: 25,
                 skip,
                 orderBy: {
-                    createdAt: "asc"
+                    createdAt: "desc"
                 }
             }
         }
@@ -74,12 +74,12 @@ export async function GetMessages(input: { conversationId: string, skip?: string
     if (skip === 0) {
         const jsonMessage = messages.Message.map(x => JSON.stringify(x))
         await redis.multi()
-            .lpush(cacheKey, ...jsonMessage.reverse())
+            .lpush(cacheKey, ...jsonMessage)
             .ltrim(cacheKey, -25, -1)
             .expire(cacheKey, 24 * 60 * 60)
             .exec()
     }
-
+console.log(JSON.stringify(messages.Message))
     return {
         msg: "Messages found",
         status: 200,

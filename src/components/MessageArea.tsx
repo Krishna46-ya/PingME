@@ -6,6 +6,7 @@ import { GetMessages } from "@/actions/getMessages"
 import { Avator } from "./ui/avator"
 import { getOldMessages } from "@/actions/getOldMessage"
 import { redirect } from "next/navigation"
+import { InfoBox } from "./InfoBox"
 
 export function MessageArea({ recipient, ID }: { recipient: string, ID: string }) {
     const { recipientId, conversationId } = useMemo(() => parseParam({ recipient }), [recipient])
@@ -18,6 +19,7 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
     const messageEndRef = useRef<HTMLDivElement>(null)
     const scrollCointainerRef = useRef<HTMLDivElement>(null)
     const [autoScroll, setAutoScroll] = useState(true)
+    const onGoing = useRef(false)
 
     const isValid =
         recipientId !== "Invalid" &&
@@ -51,8 +53,10 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
         const scroll = scrollCointainerRef.current
         if (!scroll || !conversationId) return;
         if (scroll.scrollTop <= 0) {
-            const totalMessages = messagesByConvo[conversationId].length
-            if (totalMessages <= 24) return
+            const totalMessages = messagesByConvo[conversationId]?.length || 0
+            if (totalMessages < 1) return
+            if (onGoing.current === true) return
+            onGoing.current = true
             const messages = await getOldMessages({ conversationId, skip: totalMessages })
             if (messages.data) {
                 await prependMessages(conversationId, messages.data.map((message) => ({
@@ -60,7 +64,7 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
                     createdAt: message.createdAt.toISOString()
                 })))
             }
-            console.log(messages)
+            onGoing.current = false
         }
     }
 
@@ -85,26 +89,31 @@ export function MessageArea({ recipient, ID }: { recipient: string, ID: string }
                 scrollHandler()
             }}
             className="h-screen overflow-y-auto">
-            <div className="sticky top-0 left-0 w-full bg-slate-400 items-center flex justify-between p-2">
-                <div className="flex items-center">
+            <div className="sticky top-0 left-0 w-full bg-slate-400 items-center flex justify-between md:px-5 px-2 p-2">
+                <div className="flex items-center text-slate-900">
+                    <button onClick={() => { redirect('/chat/home') }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.75} stroke="currentColor" className="size-8 sm:hidden mr-3 active:bg-slate-500 rounded-full">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </button>
                     <Avator id={recipientId}></Avator>
-                    <span className="pl-2 text-lg font-semibold">{fullRecepient?.name}</span>
+                    <span className="pl-2 text-lg font-semibold truncate max-w-[200px]">{fullRecepient?.name}</span>
                 </div>
-                <button className="block sm:hidden" onClick={()=>{redirect('/chat/home')}}>BACK</button>
+                <InfoBox convoId={recipientId} name={fullRecepient?.name || ""}></InfoBox>
             </div>
-            <div className="h-full pt-16">
+            <div className="h-full pt-16 ">
                 {conversationId && (messagesByConvo[conversationId] || []).map((m) => {
                     return (
                         <div key={m.id}>
-                            <div className={`p-3 ${m.senderId === ID ? "text-right" : "text-left"}`}>
-                                <span className={`p-3 ${m.senderId === ID ? "bg-blue-400" : "bg-white"}`}>{m.content}</span>
+                            <div className={`p-3 flex ${m.senderId === ID && "justify-end"}`}>
+                                <span className={`p-3 break-words max-w-[75%] whitespace-pre-wrap inline-block rounded-lg ${m.senderId === ID ? "bg-blue-400" : "bg-white"}`}>{m.content}</span>
                             </div>
                         </div>
                     )
                 })}
-                <div ref={messageEndRef}></div>
+                <div className="h-[51px]" ref={messageEndRef}></div>
             </div>
-            <div className="absolute bottom-3 p-2 w-full justify-center flex items-center">
+            <div className="absolute bottom-1 p-1 w-full justify-center flex items-center">
                 {!(conversationId === undefined) && <InputMessage ID={ID} recipientId={recipientId} conversationId={conversationId}></InputMessage>}
             </div>
         </div>
