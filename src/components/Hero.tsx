@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { easeInOut, motion, useMotionTemplate, useScroll, useTransform } from 'motion/react'
 import { useRef } from "react";
+import { redirect } from "next/navigation";
 
 export function Hero() {
 
@@ -75,14 +76,14 @@ export function Hero() {
                         ease: "easeInOut",
                     }}
                     className="flex items-center gap-5">
-                    <button className="hover:scale-[1.05] transition-all ease-in-out duration-300 cursor-pointer flex items-center nunito-main px-6 md:text-lg font-semibold bg-gradient-to-bl from-neutral-200 via-white/20 to-slate-200 shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] py-2 rounded-full ">
+                    <button onClick={()=>{redirect("https://x.com/KrishnaYad72181")}} className="hover:scale-[1.05] transition-all ease-in-out duration-300 cursor-pointer flex items-center nunito-main px-6 md:text-lg font-semibold bg-gradient-to-bl from-neutral-200 via-white/20 to-slate-200 shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] py-2 rounded-full ">
                         <span className="pr-1.5">Connect</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
                         </svg>
 
                     </button>
-                    <button className="hover:scale-[1.05] transition-all ease-in-out duration-300 cursor-pointer flex items-center nunito-main px-6 md:text-lg font-semibold bg-gradient-to-bl shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)]  from-[#f8d7e4] to-[#d5e9fa] py-2 rounded-full">
+                    <button onClick={()=>{redirect('/chat/home')}} className="hover:scale-[1.05] transition-all ease-in-out duration-300 cursor-pointer flex items-center nunito-main px-6 md:text-lg font-semibold bg-gradient-to-bl shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)]  from-[#f8d7e4] to-[#d5e9fa] py-2 rounded-full">
                         <span className="pr-1">Get Started</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
@@ -112,7 +113,7 @@ export function Hero() {
                                 <li>🤝 Connect with friends effortlessly</li>
                             </ul>
 
-                            <button className="mt-6 px-5 py-2 rounded-full bg-gradient-to-br from-pink-300 to-blue-300 font-semibold text-neutral-800 shadow-md hover:scale-105 transition">
+                            <button onClick={()=>{redirect('/chat/home')}} className="mt-6 px-5 py-2 rounded-full bg-gradient-to-br from-pink-300 to-blue-300 font-semibold text-neutral-800 shadow-md hover:scale-105 transition">
                                 Try it now
                             </button>
 

@@ -1,6 +1,6 @@
 'use server'
 import prisma from "@/lib/db";
-import { NEXT_AUTH } from "@/app/api/auth/[...nextauth]/route";
+import { NEXT_AUTH } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
 export async function getConversation() {

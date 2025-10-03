@@ -39,7 +39,7 @@ export function Footer() {
                             <div className="text-neutral-700 font-semibold">
                                 <h3 className="text-xl text-neutral-900 pb-3 font-semibold">Links</h3>
                                 <div className="hover:translate-x-2 transition-all duration-200 ease-in-out">
-                                    <Link href={"/"}>Contact</Link>
+                                    <Link href={"/chat/home"}>Contact</Link>
                                 </div>
                                 <div className="hover:translate-x-2 transition-all duration-200 ease-in-out">
                                     <Link href={"https://devscribe-ten.vercel.app/"}>DevScribe</Link>

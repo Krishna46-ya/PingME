@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
         if (!validOtp || !(optEntry.otp === body.otp)) {
             return NextResponse.json({
-                msg: "Invalid Otp"
+                msg: "Incorrect Otp"
             }, { status: 400 })
         }
 

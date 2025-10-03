@@ -6,16 +6,22 @@ import { useEffect, useState } from "react"
 import { wsContext } from "@/store/wsContext"
 import { redirect } from "next/navigation"
 import { ServerMessage } from "@/types/wsMessages"
+import { Skeleton } from "@/components/ui/Skeleton"
+import { useSession } from "next-auth/react"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
     const setUsers = useChatStore(s => s.setUsers)
     const setConversation = useChatStore(s => s.setConversations)
     const conversation = useChatStore(s => s.conversations)
+    const session = useSession()
 
     const [ws, setWs] = useState<WebSocket | null>(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        if (session.status === "loading") return
+        if (session.status === "unauthenticated") redirect('/signin')
         const socket = new WebSocket('/api/v1/ws')
         setWs(socket)
 
@@ -97,12 +103,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 } as conversationMeta
             ))
             setConversation(convos || [])
+            setLoading(false)
         }
         data();
         return () => {
             socket.close()
         }
-    }, [setUsers, setConversation])
+    }, [setUsers, setConversation, session])
+
+    if (loading) {
+        return (
+            <Skeleton />
+        )
+    }
 
     return (<>
         <wsContext.Provider value={ws}>

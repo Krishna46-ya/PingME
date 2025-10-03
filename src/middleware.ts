@@ -19,7 +19,7 @@ export default async function middleware(req: NextRequest) {
     let limit
 
     if (path.startsWith('/api/v1/signup') || path.startsWith("/api/v1/otp-verify")) {
-        limit = 5
+        limit = 10
         try {
             await minuteLimiter.checkNext(req, limit);
             return NextResponse.next();

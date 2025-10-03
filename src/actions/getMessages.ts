@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from "@/lib/db"
-import { NEXT_AUTH } from "@/app/api/auth/[...nextauth]/route"
+import { NEXT_AUTH } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import z, { json } from "zod"
 import { redis } from "@/lib/redis"
@@ -79,7 +79,7 @@ export async function GetMessages(input: { conversationId: string, skip?: string
             .expire(cacheKey, 24 * 60 * 60)
             .exec()
     }
-console.log(JSON.stringify(messages.Message))
+    console.log(JSON.stringify(messages.Message))
     return {
         msg: "Messages found",
         status: 200,

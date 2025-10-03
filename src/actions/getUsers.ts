@@ -1,5 +1,5 @@
 'use server'
-import { NEXT_AUTH } from "@/app/api/auth/[...nextauth]/route"
+import { NEXT_AUTH } from "@/lib/auth"
 import prisma from "@/lib/db"
 import { getServerSession } from "next-auth"
 

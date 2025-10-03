@@ -7,16 +7,16 @@ import { useEffect, useRef, useState } from "react";
 
 const Links = [
     {
-        name: "About",
+        name: "Home",
         link: "/chat/home"
     },
     {
         name: "Login",
-        link: "/api/auth/signin"
+        link: "/signin"
     },
     {
         name: "Sign Up",
-        link: "/api/auth/signin"
+        link: "/signup"
     }
 ]
 

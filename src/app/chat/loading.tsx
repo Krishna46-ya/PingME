@@ -1,5 +1,7 @@
-export default function Loading(){
-    return(<>
-    ...loading
-    </>)
+import { Skeleton } from "@/components/ui/Skeleton";
+
+export default function Loading() {
+    return (
+        <Skeleton />
+    )
 }

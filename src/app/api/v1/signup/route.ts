@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
         if (mailInfo.success) {
             return NextResponse.json({
-                msg: "otp " + otp + " sent on email " + newUser.email
+                msg: "otp sent on email " + newUser.email
             }, { status: 201 })
         }
         else {
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
         if (mailInfo.success) {
             return NextResponse.json({
-                msg: "otp " + otp + " sent on email " + user.email
+                msg: "otp sent on email " + user.email
             }, { status: 201 })
         }
         else {
@@ -112,4 +112,6 @@ export async function POST(req: NextRequest) {
             msg: "Account with the email already exists, login instead."
         }, { status: 400 })
     }
+
+    return NextResponse.json({ msg: "Unhandled case" }, { status: 500 });
 }
