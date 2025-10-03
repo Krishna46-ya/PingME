@@ -15,7 +15,7 @@ export default function AboutPage() {
                     Built with love and care, PingMe is here to bring people closer together.
                 </p>
                 <p className="text-gray-900 mt-5">
-                    THIS LONG WAY LONGER THAN EXPECTED IF YOU FIND A BUG, JUST KNOW I PROBABALY KNOW ABOUT IT, I JUST DONT WANT TO DEAL WITH IT.<br/>    
+                    P.S. THIS LONG WAY LONGER THAN EXPECTED IF YOU FIND A BUG, JUST KNOW I PROBABALY KNOW ABOUT IT, I JUST DONT WANT TO DEAL WITH IT.<br/>    
                     There are a long more thing a wanted to add, but I am not motivated to continue it, do leave a review if you have read this far.
                 </p>
             </div>

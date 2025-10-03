@@ -1,6 +1,7 @@
 import { desc } from "motion/react-client";
 import { NextRequest, NextResponse } from "next/server";
 import z, { email, string } from "zod";
+import prisma from "@/lib/db";
 
 const otpSchema = z.object({
     email: email(),
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
     const body = result.data
 
     try {
-        const user = await prisma?.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 email: body.email
             },
